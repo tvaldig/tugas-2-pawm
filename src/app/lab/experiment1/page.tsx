@@ -134,7 +134,7 @@ const Experiment1: FC = () => {
     
         if (isAuthenticated) {
             try {
-                const response = await fetch('http://localhost:8080/save', {
+                const response = await fetch('https://server-i2k01wfod-tvaldigs-projects.vercel.app/save', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -170,7 +170,7 @@ const Experiment1: FC = () => {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const response = await fetch('http://localhost:8080/latest', {
+                const response = await fetch('https://server-i2k01wfod-tvaldigs-projects.vercel.app/latest', {
                     headers: {
                         'Accept': 'application/json'
                     },
@@ -213,7 +213,7 @@ const Experiment1: FC = () => {
 
     const checkAuthAndFetchScore = async () => {
         try {
-            const response = await fetch('http://localhost:8080/latest');
+            const response = await fetch('https://server-i2k01wfod-tvaldigs-projects.vercel.app/latest');
             if (response.status === 403) {
                 setIsAuthenticated(false);
                 return;
@@ -236,7 +236,7 @@ const Experiment1: FC = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/save', {
+            const response = await fetch('https://server-i2k01wfod-tvaldigs-projects.vercel.app/save', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
