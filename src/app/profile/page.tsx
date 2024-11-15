@@ -21,7 +21,7 @@ const Profile: FC = () => {
       if (!token || !userId) return;
 
       try {
-        const response = await fetch(`https://server-i2k01wfod-tvaldigs-projects.vercel.app/users/${userId}`, {
+        const response = await fetch(`https://server-orcin-two.vercel.app/users/${userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -9,7 +9,7 @@ const Login: FC = () => {
   const router = useRouter();
   const handleLogin = async (email: string,password: string) => {
     try {
-      const response = await fetch("https://server-i2k01wfod-tvaldigs-projects.vercel.app/auth/login", {
+      const response = await fetch("https://server-orcin-two.vercel.app/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

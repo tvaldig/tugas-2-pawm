@@ -17,7 +17,7 @@ const Atoms: FC = () => {
 
   const fetchProgress = async (userId: string) => {
     try {
-      const response = await fetch(`https://server-i2k01wfod-tvaldigs-projects.vercel.app/${userId}/progress`);
+      const response = await fetch(`https://server-orcin-two.vercel.app/${userId}/progress`);
       const data = await response.json();
       setProgress(data.progressPercentage);
     } catch (error) {
@@ -86,7 +86,7 @@ const Atoms: FC = () => {
   const markMaterialAsRead = async (userId: string, materialId: string, isRead: boolean) => {
     try {
       // Toggle the material read status on the backend
-      await fetch("https://server-i2k01wfod-tvaldigs-projects.vercel.app/mark-as-read", {
+      await fetch("https://server-orcin-two.vercel.app/mark-as-read", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, materialId, isRead }),
