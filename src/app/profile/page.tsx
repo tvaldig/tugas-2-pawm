@@ -10,7 +10,7 @@ interface UserProfile {
   school: string;
 }
 
-export const Profile: FC = () => {
+const Profile: FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
