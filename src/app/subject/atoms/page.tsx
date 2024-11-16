@@ -4,33 +4,8 @@ import LearningCard from "@/components/LearningCard";
 import { FC, useEffect, useState } from "react";
 
 const Atoms: FC = () => {
-  const [userId, setUserId] = useState<string | "">("");
+  const [userId, setUserId] = useState<string>("");
   const [progress, setProgress] = useState<number>(0);
-
-  useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
-    if (storedUserId) {
-      setUserId(storedUserId);
-      fetchProgress(storedUserId);
-    }
-  }, []);
-
-  const fetchProgress = async (userId: string) => {
-    try {
-      const response = await fetch(`https://server-orcin-two.vercel.app/${userId}/progress`);
-      const data = await response.json();
-      setProgress(data.progressPercentage);
-    } catch (error) {
-      console.error("Error fetching progress:", error);
-    }
-  };
-
-  const updateProgress = () => {
-    const completedCount = materials.filter(material => material.isMarkedAsRead).length;
-    const progressPercentage = (completedCount / materials.length) * 100;
-    setProgress(progressPercentage);
-  };
-
   const [materials, setMaterials] = useState([
     {
       title: "Atom Model & Valency",
@@ -83,24 +58,67 @@ const Atoms: FC = () => {
     },
   ]);
 
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(storedUserId);
+      fetchProgress(storedUserId);
+    }
+  }, []);
+
+  const fetchProgress = async (userId: string) => {
+    try {
+      const response = await fetch(`https://server-orcin-two.vercel.app/${userId}/progress`);
+      const data = await response.json();
+      
+      // Update materials based on backend data
+      if (data.materials) {
+        setMaterials(prevMaterials => 
+          prevMaterials.map(material => ({
+            ...material,
+            isMarkedAsRead: data.materials.includes(material._id)
+          }))
+        );
+      }
+      
+      // Calculate initial progress based on marked materials
+      const completedCount = data.materials ? data.materials.length : 0;
+      const progressPercentage = (completedCount / materials.length) * 100;
+      setProgress(progressPercentage);
+    } catch (error) {
+      console.error("Error fetching progress:", error);
+      // Set progress to 0 if fetch fails
+      setProgress(0);
+    }
+  };
+
+  const calculateProgress = (updatedMaterials: typeof materials) => {
+    const completedCount = updatedMaterials.filter(material => material.isMarkedAsRead).length;
+    return (completedCount / updatedMaterials.length) * 100;
+  };
+
   const markMaterialAsRead = async (userId: string, materialId: string, isRead: boolean) => {
     try {
-      // Toggle the material read status on the backend
+      // Make API call to update backend
       await fetch("https://server-orcin-two.vercel.app/mark-as-read", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, materialId, isRead }),
       });
 
-      // Update local state to reflect the read status
-      setMaterials(prevMaterials =>
-        prevMaterials.map(material =>
-          material._id === materialId ? { ...material, isMarkedAsRead: isRead } : material
-        )
+      // Update local state only after successful API call
+      const updatedMaterials = materials.map(material =>
+        material._id === materialId ? { ...material, isMarkedAsRead: isRead } : material
       );
-      updateProgress();
+      
+      setMaterials(updatedMaterials);
+      
+      // Calculate and update progress based on updated materials
+      const newProgress = calculateProgress(updatedMaterials);
+      setProgress(newProgress);
     } catch (error) {
       console.error("Error marking material as read:", error);
+      // Optionally show error message to user
     }
   };
 
