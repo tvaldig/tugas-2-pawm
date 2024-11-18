@@ -49,7 +49,7 @@ const Experiment1: FC = () => {
     const [savedQuestionIndex, setSavedQuestionIndex] = useState<number | null>(null);
     const handleRemoveHowToPlay = () => setOpenPopup(false);
     const handleRemoveAnswerPopUp = () => setOpenPopupAnswer(false);
-    const token = localStorage.getItem("token");
+   
 
     const handlePeriodClick = (index: number) => {
         setSelectedPeriod(selectedPeriod === index ? null : index);
@@ -134,6 +134,7 @@ const Experiment1: FC = () => {
     
         if (isAuthenticated) {
             try {
+                const token = localStorage.getItem("token");
                 const response = await fetch('https://server-orcin-two.vercel.app/save', {
                     method: 'POST',
                     headers: {
@@ -171,6 +172,7 @@ const Experiment1: FC = () => {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
+                const token = localStorage.getItem("token");
                 const response = await fetch('https://server-orcin-two.vercel.app/latest', {
                     headers: {
                         'Accept': 'application/json',
@@ -238,6 +240,7 @@ const Experiment1: FC = () => {
         }
 
         try {
+            const token = localStorage.getItem("token");
             const response = await fetch('https://server-orcin-two.vercel.app/save', {
                 method: 'POST',
                 headers: {
