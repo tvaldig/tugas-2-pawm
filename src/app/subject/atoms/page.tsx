@@ -57,7 +57,7 @@ const Atoms: FC = () => {
       _id: "5",
     },
   ]);
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     if (storedUserId) {
@@ -102,7 +102,9 @@ const Atoms: FC = () => {
       // Make API call to update backend
       await fetch("https://server-orcin-two.vercel.app/mark-as-read", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", 
+            "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify({ userId, materialId, isRead }),
       });
 

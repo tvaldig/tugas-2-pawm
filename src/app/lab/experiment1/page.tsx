@@ -42,14 +42,14 @@ const Experiment1: FC = () => {
     const [elementNameInput, setElementNameInput] = useState(""); // For "Element Name"
     const [currentQuestion, setCurrentQuestion] = useState(0); // Track current question
     const [score, setScore] = useState(0);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(true);
     // New state to track completed questions
     const [completedQuestions, setCompletedQuestions] = useState<Set<number>>(new Set());
     // New state to track the saved question index
     const [savedQuestionIndex, setSavedQuestionIndex] = useState<number | null>(null);
     const handleRemoveHowToPlay = () => setOpenPopup(false);
     const handleRemoveAnswerPopUp = () => setOpenPopupAnswer(false);
-
+    const token = localStorage.getItem("token");
 
     const handlePeriodClick = (index: number) => {
         setSelectedPeriod(selectedPeriod === index ? null : index);
@@ -138,7 +138,8 @@ const Experiment1: FC = () => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                          "Authorization": `Bearer ${token}`,
                     },
                     body: JSON.stringify({ 
                         score: newScore,
@@ -172,7 +173,8 @@ const Experiment1: FC = () => {
             try {
                 const response = await fetch('https://server-orcin-two.vercel.app/latest', {
                     headers: {
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                          "Authorization": `Bearer ${token}`
                     },
                 });
     
@@ -240,7 +242,8 @@ const Experiment1: FC = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                      "Authorization": `Bearer ${token}`,
                 },
                 body: JSON.stringify({ 
                     score,
